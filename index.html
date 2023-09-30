@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="icon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome -->
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css"
+    rel="stylesheet"
+    />
+    <title>Quote App</title>
+</head>
+<body>
+    <section class="vh-100" style="background-color: #f5f7fa;">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-md-9 col-lg-7 col-xl-5">
+      
+              <div class="card">
+                <div class="card-body">
+                  <blockquote class="blockquote blockquote-custom bg-white px-3 pt-4">
+                    <div class="blockquote-custom-icon bg-info shadow-1-strong">
+                      <i class="fa fa-quote-left text-white"></i>
+                    </div>
+                    <p class="mb-0 mt-2 font-italic" id="quotes">
+                      
+                    </p>
+                    <footer class="blockquote-footer pt-4 mt-4 border-top" id="author">
+                      <!-- <cite title="Source Title">Source Title</cite> -->
+                      
+                    </footer>
+                    <!-- <a href="#" class="text-info">@consequat</a> -->
+                    <button type="button" class="btn btn-light btn-rounded" id="newQ" style="background-color: rgb(243, 238, 238);">New Quote</button>
+                    <a id='tweet' class="btn text-white" style="background-color: #55acee;" href="#!" role="button">
+                        <i class="fab fa-twitter"></i>
+                      </a>
+
+                  </blockquote>
+                </div>
+              </div>
+      
+            </div>
+          </div>
+        </div>
+      </section>
+    <script>
+        let realData="";
+        const quotes=document.getElementById('quotes');
+        const author=document.getElementById('author');
+        const newQ=document.getElementById('newQ');
+        const tweet=document.getElementById('tweet');
+        var quoteData=""
+        const getRandomQuote=async()=>{
+            let rnum=Math.floor(Math.random()*realData.length);
+            quoteData=realData[rnum];
+            quotes.innerText=`${quoteData.text}`;
+            const autdata=(quoteData.author).split(',')
+            author.innerText=`${autdata[0]}`;
+            // console.log(realData[rnum].author);
+        }
+        const getQuotes= async()=>{
+            const api='https://type.fit/api/quotes';
+            try{
+                let data=await fetch(api);
+                realData= await data.json();
+                getRandomQuote();
+                // console.log(realData);
+            }
+            catch(err){}
+        }
+        getQuotes();
+        newQ.addEventListener('click',getQuotes);
+        tweet.addEventListener('click',()=>{
+            const twt=`https://twitter.com/intent/tweet?text=${quoteData.text}`;
+            window.open(twt);
+        });
+        <!-- MDB -->
+
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"
+    </script>
+</body>
+</html>
